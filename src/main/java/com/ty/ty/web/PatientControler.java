@@ -2,8 +2,7 @@ package com.ty.ty.web;
 
 
 
-import java.util.Date;
-import java.util.List;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +33,7 @@ public class PatientControler {
     //     return "test";
     // }
 
-    @GetMapping("/index")
+    @GetMapping("user/index")
     public String index(Model model,
             @RequestParam(name="page",defaultValue = "0" )int page, 
             @RequestParam(name = "size",defaultValue="4") int size,
@@ -56,33 +55,33 @@ public class PatientControler {
     //     return "patients";
     // }
 
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String delete(Long id,String Keyword,int page){
         patientrepository.deleteById(id);
-        return "redirect:/index?page="+page+"&Keyword="+Keyword;
+        return "redirect:/user/index?page="+page+"&Keyword="+Keyword;
     }
 
     @GetMapping("/")
     public String home(){
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
-    @GetMapping("/formPatient")
+    @GetMapping("/admin/formPatient")
     public String formPatient(Model model){
         model.addAttribute("patient",new patient());
         return "formPatient";
     }
 
-    @PostMapping("/savePatient")
+    @PostMapping("/admin/savePatient")
     public String savePatient(@Valid patient patient, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "formPatient";
         }
          patientrepository.save(patient);
-         return "redirect:/index?page="+Math.floorDiv(patient.getId(),4);
+         return "redirect:/user/index?page="+Math.floorDiv(patient.getId(),4);
     }
 
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
     public String editPatient(Model model,@RequestParam(name = "id") Long id){
         patient patient=patientrepository.findById(id).get();
         model.addAttribute("patient",patient);

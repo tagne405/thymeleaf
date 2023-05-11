@@ -12,7 +12,7 @@
 
     <div layout:fragment="content">
         <div class=" pt-5">
-            <form th:action="@{/savePatient}" method="post" class="container " style="max-width: 30%;">
+            <form th:action="@{/admin/savePatient}" method="post" class="container " style="max-width: 30%;">
                 <div class="mb-2">
                     <label class="form-label">ID</label>:&nbsp;<label th:text="${patient.id}"></label>
                     <input type="hidden" name="id" class="form-control" th:value="${patient.id}">

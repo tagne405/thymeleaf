@@ -5,6 +5,9 @@ import java.util.Date;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ty.ty.Entity.patient;
 import com.ty.ty.repository.patientRepository;
@@ -39,6 +42,10 @@ public class TyApplication implements CommandLineRunner{
 			patientrepository.save(patient1);
 	}
 
+	@Bean
+	PasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();//alagorithme de hachage supperieur a MD5 
+	}
 	
 
 }
