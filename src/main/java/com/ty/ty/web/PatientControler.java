@@ -6,6 +6,7 @@ package com.ty.ty.web;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,7 @@ public class PatientControler {
     //     return "test";
     // }
 
-    @GetMapping("user/index")
+    @GetMapping("/user/index")
     public String index(Model model,
             @RequestParam(name="page",defaultValue = "0" )int page, 
             @RequestParam(name = "size",defaultValue="4") int size,
@@ -56,6 +57,7 @@ public class PatientControler {
     // }
 
     @GetMapping("/admin/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(Long id,String Keyword,int page){
         patientrepository.deleteById(id);
         return "redirect:/user/index?page="+page+"&Keyword="+Keyword;
@@ -67,12 +69,14 @@ public class PatientControler {
     }
 
     @GetMapping("/admin/formPatient")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String formPatient(Model model){
         model.addAttribute("patient",new patient());
         return "formPatient";
     }
 
     @PostMapping("/admin/savePatient")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String savePatient(@Valid patient patient, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "formPatient";
@@ -82,6 +86,7 @@ public class PatientControler {
     }
 
     @GetMapping("/admin/editPatient")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editPatient(Model model,@RequestParam(name = "id") Long id){
         patient patient=patientrepository.findById(id).get();
         model.addAttribute("patient",patient);

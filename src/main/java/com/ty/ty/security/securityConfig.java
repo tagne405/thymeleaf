@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+//authorisation des resource avec des annotation
+@EnableMethodSecurity(prePostEnabled = true)
 public class securityConfig {
 
     private PasswordEncoder passwordEncoder;
@@ -27,7 +30,7 @@ public class securityConfig {
     }
 
 
-    // @Bean
+     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
         return new InMemoryUserDetailsManager(
             User.withUsername("tyan").password(passwordEncoder.encode("1234")).roles("USER").build(),
@@ -40,9 +43,14 @@ public class securityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.formLogin();
-        httpSecurity.authorizeHttpRequests().requestMatchers("/user/**").hasRole("USER");
-        httpSecurity.authorizeHttpRequests().requestMatchers("/admin/**").hasRole("ADMIN");
+        httpSecurity.formLogin().loginPage("/login").permitAll();
+        httpSecurity.rememberMe();
+        //acceptation de la bibliotheque de bootstrap a accede au server et la base de donne H2
+        httpSecurity.authorizeHttpRequests().requestMatchers("/webjars/**").permitAll();
+
+        //definition des role des utilisateur
+        // httpSecurity.authorizeHttpRequests().requestMatchers("/user/**").hasRole("USER");
+        //httpSecurity.authorizeHttpRequests().requestMatchers("/admin/**").hasRole("ADMIN");
         httpSecurity.exceptionHandling().accessDeniedPage("/notAuthorized");
         httpSecurity.authorizeHttpRequests().anyRequest().authenticated();
         return httpSecurity.build();
