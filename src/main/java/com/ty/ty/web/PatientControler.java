@@ -29,10 +29,6 @@ public class PatientControler {
         this.patientrepository = patientrepository;
     }
 
-    // @GetMapping("/teste")
-    // public String test(){
-    //     return "test";
-    // }
 
     @GetMapping("/user/index")
     public String index(Model model,
@@ -48,13 +44,6 @@ public class PatientControler {
         return "patients";
     }
 
-    
-
-    // public String index(Model model){
-    //     Page<patient> pagePatients=patientrepository.findAll(PageRequest.of(0, 4));
-    //     model.addAttribute("listePatient", pagePatients.getContent());
-    //     return "patients";
-    // }
 
     @GetMapping("/admin/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

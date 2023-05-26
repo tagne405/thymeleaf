@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ty.ty.Entity.patient;
-@Repository
+
 public interface patientRepository extends JpaRepository <patient,Long> {
     Page<patient> findByNomContains(String keyword,Pageable pageable);
 
